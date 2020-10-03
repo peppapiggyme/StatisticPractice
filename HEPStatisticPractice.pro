@@ -34,6 +34,7 @@ HEADERS += \
     Excercise_2.h \
     Utils.h
 
+# install gsl
 LIBS += -L/usr/local/Cellar/gsl/2.6/lib/ -lgsl -lgslcblas
 
 INCLUDEPATH += /usr/local/Cellar/gsl/2.6/include
@@ -41,5 +42,6 @@ DEPENDPATH += /usr/local/Cellar/gsl/2.6/include
 PRE_TARGETDEPS += /usr/local/Cellar/gsl/2.6/lib/libgsl.a
 PRE_TARGETDEPS += /usr/local/Cellar/gsl/2.6/lib/libgslcblas.a
 
+# install ROOT
 LIBS += -L/usr/local/Cellar/root/6.22.00_1/lib/root -lCore -lImt -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lROOTVecOps -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lMultiProc -lROOTDataFrame -stdlib=libc++ -lpthread -lm -ldl
 INCLUDEPATH += /usr/local/Cellar/root/6.22.00_1/include/root/

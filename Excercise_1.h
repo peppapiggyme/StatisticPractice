@@ -3,11 +3,6 @@
 
 #include "ExcerciseBase.h"
 
-class Excercise_1 : public ExcerciseBase
-{
-public:
-    Excercise_1() : ExcerciseBase() {}
-    void test() const override;
-};
+DEFINENEWEXCERCISE(1)
 
 #endif // EXCERCISE_1_H

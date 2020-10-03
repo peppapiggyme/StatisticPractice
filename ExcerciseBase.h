@@ -19,4 +19,12 @@ public:
     virtual void test() const = 0;
 };
 
+#define DEFINENEWEXCERCISE(I) \
+    class Excercise_##I : public ExcerciseBase \
+    { \
+    public: \
+        Excercise_##I() : ExcerciseBase() {} \
+        void test() const override; \
+    };
+
 #endif // EXCERCISEBASE_H
