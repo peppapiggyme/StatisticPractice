@@ -5,7 +5,7 @@ A tool that adds a new excercise
 Will add .cpp and .h file
 
 Currently it doesn't modify qmake file 
-or ExUtils class
+or ExDef
 
 Usage:
 
