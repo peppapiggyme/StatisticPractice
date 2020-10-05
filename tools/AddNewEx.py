@@ -23,7 +23,7 @@ import os.path
 
 nEx = sys.argv[1]
 
-cpp_str = "#include \"Exercise_{N}.h\"\n\n#include <iostream>\n\nusing namespace std;\n\nvoid Exercise_{N}::test() const\n".format(N=nEx) + "{\n\n}\n"
+cpp_str = "#include \"Exercise_{N}.h\"\n#include \"ExUtils.h\"\n#include \"Utils.h\"\n\n#include <iostream>\n\nusing namespace std;\n\nvoid Exercise_{N}::test() const\n".format(N=nEx) + "{\n\n}\n"
 
 header_str = "#ifndef EXERCISE_{N}_H\n#define EXERCISE_{N}_H\n\n#include \"ExerciseBase.h\"\n\nDEFINENEWEXERCISE({N})\n\n#endif // EXERCISE_{N}_H\n".format(N=nEx)
 
