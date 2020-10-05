@@ -5,6 +5,7 @@
 #include <sstream>
 #include <vector>
 #include <algorithm>
+#include <chrono>
 
 /**
  * @brief Tool for IO, STL, ...
@@ -21,6 +22,10 @@ using std::string;
 using std::domain_error;
 using std::istringstream;
 using std::vector;
+using std::chrono::duration_cast;
+using std::chrono::steady_clock;
+using std::chrono::milliseconds;
+
 
 namespace SP
 {
@@ -124,6 +129,15 @@ namespace SP
         {
             std::for_each(vec.begin(), vec.end(), [](auto& p){ delete p; p = nullptr; });
             vec.clear();
+        }
+
+        template<typename Tfunc>
+        static long long FunctionRunTime(Tfunc f)
+        {
+            auto t1 = steady_clock::now();
+            f();
+            auto t2 = steady_clock::now();
+            return duration_cast<milliseconds>(t2-t1).count();
         }
     };
 }

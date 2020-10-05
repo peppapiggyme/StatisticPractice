@@ -1,6 +1,9 @@
 #include "ExDef.h"
 #include "Utils.h"
 
+#include <thread>
+#include <mutex>
+
 /**
  * 本程序旨在为高能物理专业的同学提供统计学练习，一开始它是为
  * 《粒子物理与核物理实验方法》这门课设计的。面向本科生高年级
@@ -27,26 +30,52 @@
  * @todo 打印所有可供选择的例子 -> printEx()
  */
 
-// prototypes
-void test();
 
+
+/// prototypes
+void Test();
+void PrintInfo();
+
+
+/// fields
+// mutex for Testing, no overlap if run multi tests
+// this feature is only for developer
+std::mutex gMutexTest;
+const std::size_t gNTests = 2;
 
 // main function
 int main()
 {
-    try {
-        test();
-    } catch (std::exception& e) {
-        std::cerr << e.what() << '\n';
+    PrintInfo();
 
-    }
-    return 0;
+    std::vector<std::thread> vThreads;
+
+    for (std::size_t i = 0; i < gNTests; ++i)
+        vThreads.emplace_back(Test);
+
+    std::for_each(vThreads.begin(), vThreads.end(), [](std::thread& t){ t.join(); });
 }
 
+// print info
+void PrintInfo()
+{
+    auto printFrameLine = []()
+    { SP::IO::println(" *--------------------------------------------* "); };
+    auto printEmptyLine = []()
+    { SP::IO::println(" |                                            | "); };
+
+    printFrameLine();                                                       printEmptyLine();
+    SP::IO::println(" | Welcome to HEP Statistics Practice Program | ");    printEmptyLine();
+    SP::IO::println(" |                        Author: Bowen Zhang | ");    printEmptyLine();
+    printFrameLine();
+}
 
 // do excercises here
-void test()
+void Test()
 {
+    std::lock_guard lg(gMutexTest);
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
     SP::ExFactoryCollection ExCol;
     ExCol.setExFacts();
     const auto& ExFacts = ExCol.getExFacts();
@@ -54,18 +83,22 @@ void test()
     int cont = true;
 
     while (cont) {
-        int i = SP::IO::getInteger();
-        if (i > (int)ExFacts.size() || i < 1)
-        {
-            std::cerr << "练习" << i << "不存在， 请重试！\n";
+        try {
+            int i = SP::IO::getInteger();
+            if (i > (int)ExFacts.size() || i < 1)
+            {
+                std::cerr << "练习" << i << "不存在， 请重试！\n";
+                cont = SP::IO::doContinue();
+                continue;
+            }
+
+            const auto e = ExFacts[i-1]->Create();
+            e->test();
+            delete e;
+
             cont = SP::IO::doContinue();
-            continue;
+        } catch (const std::exception& e) {
+            std::cerr << e.what() << '\n';
         }
-
-        const auto e = ExFacts[i-1]->Create();
-        e->test();
-        delete e;
-
-        cont = SP::IO::doContinue();
     }
 }
