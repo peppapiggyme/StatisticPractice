@@ -41,7 +41,7 @@ void PrintInfo();
 // mutex for Testing, no overlap if run multi tests
 // this feature is only for developer
 std::mutex gMutexTest;
-const std::size_t gNTests = 2;
+const std::size_t gNTests = 1;
 
 // main function
 int main()
@@ -73,7 +73,7 @@ void PrintInfo()
 // do excercises here
 void Test()
 {
-    std::lock_guard lg(gMutexTest);
+    gMutexTest.lock();
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
     SP::ExFactoryCollection ExCol;
@@ -98,7 +98,9 @@ void Test()
 
             cont = SP::IO::doContinue();
         } catch (const std::exception& e) {
+            gMutexTest.unlock();
             std::cerr << e.what() << '\n';
         }
     }
+    gMutexTest.unlock();
 }

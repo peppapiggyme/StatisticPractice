@@ -6,6 +6,7 @@
 #include <vector>
 #include <algorithm>
 #include <chrono>
+#include <climits>
 
 /**
  * @brief Tool for IO, STL, ...
@@ -127,7 +128,7 @@ namespace SP
         template<typename T>
         static void ClearUp(std::vector<T>& vec)
         {
-            std::for_each(vec.begin(), vec.end(), [](auto& p){ delete p; p = nullptr; });
+            std::for_each(vec.begin(), vec.end(), [](T& p){ delete p; p = nullptr; });
             vec.clear();
         }
 
