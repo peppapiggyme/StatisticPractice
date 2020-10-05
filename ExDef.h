@@ -2,7 +2,7 @@
 #define EXDEF_H
 
 /**
- * @brief Whenever a new Excercise is added
+ * @brief Whenever a new Exercise is added
  * One should also modify the ExDef.h and ExDef.cxx
  * To make sure they can be created by the factories
  *
@@ -11,8 +11,9 @@
  * @date 2020/10/03
  */
 
-#include "Excercise_1.h"
-#include "Excercise_2.h"
+#include "Exercise_1.h"
+#include "Exercise_2.h"
+#include "Exercise_3.h"
 #include "Utils.h"
 
 #include <vector>
@@ -27,7 +28,7 @@ namespace SP
     public:
         ExFactory() = default;
         virtual ~ExFactory() {}
-        virtual ExcerciseBase* Create() = 0;
+        virtual ExerciseBase* Create() = 0;
     };
 
     class ExFactoryCollection
@@ -52,15 +53,16 @@ namespace SP
     class ExFactory_##I : public ExFactory \
     { \
     public: \
-        virtual ExcerciseBase * Create() override { \
-            return new Excercise_##I(); \
+        virtual ExerciseBase * Create() override { \
+            return new Exercise_##I(); \
         } \
     }; \
     }
 
 #define INSTANCE_EXFACTORY(I) new SP::ExFactory_##I()
 
-ADDNEWEXFACTORY(1); //vExFacts.push_back(new INSTANCE_FACTORY(1));
-ADDNEWEXFACTORY(2);// vExFacts.push_back(new INSTANCE_FACTORY(2));
+ADDNEWEXFACTORY(1);
+ADDNEWEXFACTORY(2);
+ADDNEWEXFACTORY(3);
 
 #endif // EXDEF_H

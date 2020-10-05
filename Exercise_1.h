@@ -1,8 +1,8 @@
 #ifndef EXCERCISE_1_H
 #define EXCERCISE_1_H
 
-#include "ExcerciseBase.h"
+#include "ExerciseBase.h"
 
-DEFINENEWEXCERCISE(1)
+DEFINENEWEXERCISE(1)
 
 #endif // EXCERCISE_1_H

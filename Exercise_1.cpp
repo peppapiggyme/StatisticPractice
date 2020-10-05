@@ -1,4 +1,4 @@
-#include "Excercise_1.h"
+#include "Exercise_1.h"
 #include "Utils.h"
 
 #include <gsl/gsl_fit.h>
@@ -19,7 +19,7 @@
 
 using namespace std;
 
-void Excercise_1::test() const
+void Exercise_1::test() const
 {
     const int N = 5;
 

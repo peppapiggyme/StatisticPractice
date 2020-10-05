@@ -35,7 +35,7 @@ namespace SP
         /**
          * @brief Get integer (the index of excercise) from user
          */
-        static int getInteger(const std::string& prompt = "请输入要测试的练习序号（整数）：",
+        static int getInteger(const std::string& prompt = "请输入要测试的练习序号：",
                        const std::string& reprompt = "请重试（必须输入整数）！\n")
         {
             while (1)

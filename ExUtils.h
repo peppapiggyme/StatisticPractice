@@ -3,7 +3,7 @@
 
 /**
  * @brief this file is supposed to hold the helper functions
- * for the excercise, e.g. matrix calculations, etc.
+ * for the exercise, e.g. matrix calculations, etc.
  *
  * @file ExUtils.h
  * @author Bowen Zhang

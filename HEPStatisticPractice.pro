@@ -16,8 +16,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         ExDef.cpp \
         ExUtils.cpp\
-        Excercise_1.cpp \
-        Excercise_2.cpp \
+        Exercise_1.cpp \
+        Exercise_2.cpp \
+        Exercise_3.cpp \
         main.cpp
 
 # Default rules for deployment.
@@ -28,9 +29,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     ExDef.h \
     ExUtils.h \
-    ExcerciseBase.h \
-    Excercise_1.h \
-    Excercise_2.h \
+    ExerciseBase.h \
+    Exercise_1.h \
+    Exercise_2.h \
+    Exercise_3.h \
     Utils.h
 
 # install gsl
