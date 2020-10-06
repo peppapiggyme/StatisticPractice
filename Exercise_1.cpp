@@ -1,16 +1,22 @@
 #include "Exercise_1.h"
 #include "Utils.h"
 
-#include <gsl/gsl_fit.h>
-
+#include "TH1D.h"
+#include "TCanvas.h"
+#include "TApplication.h"
+#include "TRandom.h"
 #include "TF1.h"
-#include "TGraph.h"
+#include "TMath.h"
+#include "TMinuitMinimizer.h"
 #include "TMatrixD.h"
 #include "TFitResult.h"
 #include "TFitResultPtr.h"
 
 /**
- * @brief
+ * @brief 回顾之前学到的 ROOT Fit 功能
+ *
+ * reference:
+ * https://github.com/root-project/training/tree/master/BasicCourse/Exercises/Fitting
  *
  * @name Ex1
  * @author Bowen Zhang
@@ -21,44 +27,60 @@ using namespace std;
 
 void Exercise_1::test() const
 {
-    const int N = 5;
+    // --------------------------------------------------------------------------
+    // Preparation of the histogram to fit
 
-    SP::IO::println("\nTesting GSL ...");
+    // Create First an empty histogram with 50 bins with range [-10,10]
+    TH1D h1("h1", "h1", 50, -10, 10);
 
-    double x[N] = {1.2, 1.6, 3.4, 4.51, 5.14};
-    double y[N] = {1.3, 1.8, 3.3, 4.45, 5.35};
-    double c0, c1, cov00, cov01, cov11, sumsq;
+    // Fill the histogram with 10000 Gaussian Random number with mean=1 and
+    // sigma=2
 
-    auto run_gsl = [&](){ gsl_fit_linear(x, 1, y, 1, N, &c0, &c1, &cov00, &cov01, &cov11, &sumsq); };
+    // PLEASE FILL THIS
+    for (int i = 0; i < 10000; ++i) {
+      h1.Fill(gRandom->Gaus(1, 2));
+    }
 
-    auto dTime = SP::STL::FunctionRunTime(run_gsl);
+    // Let's now draw the histogram and save the image as .png file
 
-    SP::IO::println("Duration: %ms", dTime);
+    // PLEASE FILL THIS
+    TCanvas c("c", "Ex1_c", 800, 600);
+    h1.Draw();
 
-    SP::IO::println("Best fit: Y = % + % * x", c0, c1);
-    SP::IO::println("Covariance matrix:");
-    SP::IO::println("[ %, % \n  %, % ]", cov00, cov01, cov01, cov11);
+    // --------------------------------------------------------------------------
+    // Before Fitting we need to create the fitting function and set its initial
+    // parameter values.
 
-    SP::IO::println("\nTesting ROOT ...");
+    auto f1 = new TF1("f1", "gaus", -10,
+                      10); // We use new to have this surviving the scope
+    f1->SetParameters(100, 0, 1);
 
-    // 在这里通过ROOT实现线性函数拟合，并与GSL的结果对比
-    // ------------------------------------------
+    // We fit now the histogram using the Fit method in ROOT. By default the
+    // least-square method is used. For likelihood fits we need to use the option
+    // "L". The option "S" is used to create a TFitResult object that is returned
+    // to the user. If we want to compute the error using MINOS, we use the "E"
+    // option We want to change also the default Minimization engine. We will use
+    // Minuit2
 
-    TF1* linear_function = new TF1("linear_function", "[0] + [1] * x", 0, 6);
-    TGraph* g = new TGraph(N, x, y);
-    TFitResultPtr res = nullptr;
+    ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2");
 
-    auto run_root = [&](){ res = g->Fit(linear_function, "S"); };
+    auto res = h1.Fit(f1, "L S E");
 
-    dTime = SP::STL::FunctionRunTime(run_root);
+    // Print the result
 
-    SP::IO::println("Duration: %ms", dTime);
+    // PLEASE FILL THIS
+    res->Print();
 
-    TMatrixD cov = res->GetCovarianceMatrix();
-    cov.Print();
+    // We now get the correlation matrix of the fit from the TFitResult class
 
-    delete linear_function;
-    delete g;
+    // PLEASE FILL THIS
+    auto corMatrix = res->GetCorrelationMatrix();
+    auto covMatrix = res->GetCovarianceMatrix();
+    corMatrix.Print();
+    covMatrix.Print();
+    SP::IO::println("Gaussian sigma = % +/- %",
+                    f1->GetParameter("Sigma"),
+                    f1->GetParError(f1->GetParNumber("Sigma")));
 
-    // ------------------------------------------
+    c.SaveAs("../plots/Ex1_gaus.png");
 }
