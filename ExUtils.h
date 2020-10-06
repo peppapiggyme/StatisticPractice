@@ -20,6 +20,26 @@ namespace SPEx
      * @brief Calculate chi square value using observed data from histogram
      * and expected data from function, use root style by default, can switch
      * to the actual definition.
+     *
+     * definition:
+     *
+     *  2          (Obs_i - Exp_i)^2
+     * X  = Sum of -----------------
+     *               sigma(Exp_i)^2
+     *
+     * ROOT use a modified definiton:
+     *
+     *  2          (Obs_i - Exp_i)^2
+     * X  = Sum of -----------------
+     *               sigma(Obs_i)^2  <- != 0
+     *
+     *
+     * Pseudo code:
+     * Loop over bins, calculate per bin, get sum
+     * update 1: use abs(obs_i) as sigma_obs_i^2
+     * update 2: treat the obs_i = 0 case
+     * update 3: prints how often obs_i = 0
+     *
      */
     double GetChiSquare(TH1* h, TF1* f, bool useRootStyle = true);
 
