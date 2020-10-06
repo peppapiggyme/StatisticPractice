@@ -1,5 +1,6 @@
 #include "ExDef.h"
 #include "Utils.h"
+#include "TROOT.h"
 
 #include <thread>
 #include <mutex>
@@ -21,8 +22,9 @@
  *
  * 现有的例子:
  *  - E1: 线性拟合测试 GSL 和 ROOT
- *  - E2: 空白
- *  - E3: 空白
+ *  - E2: Chi-square 拟合，最小化
+ *  - E3: 画 data/S/B 图，柏松计数实验，PLR
+ *  - E4: 空白
  *
  * @file main.cpp
  * @author Bowen Zhang
@@ -47,6 +49,9 @@ const std::size_t gNTests = 1;
 // main function
 int main()
 {
+    // Paintings are not thread safe?
+    gROOT->SetBatch(true);
+
     PrintInfo();
 
     std::vector<std::thread> vThreads;

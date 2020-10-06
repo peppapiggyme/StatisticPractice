@@ -14,6 +14,7 @@
 #include "Exercise_1.h"
 #include "Exercise_2.h"
 #include "Exercise_3.h"
+#include "Exercise_4.h"
 #include "Utils.h"
 
 #include <vector>
@@ -64,5 +65,6 @@ namespace SP
 ADDNEWEXFACTORY(1);
 ADDNEWEXFACTORY(2);
 ADDNEWEXFACTORY(3);
+ADDNEWEXFACTORY(4);
 
 #endif // EXDEF_H
