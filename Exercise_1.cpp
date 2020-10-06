@@ -29,11 +29,12 @@ void Exercise_1::test() const
     double y[N] = {1.3, 1.8, 3.3, 4.45, 5.35};
     double c0, c1, cov00, cov01, cov11, sumsq;
 
-    auto t1 = chrono::system_clock::now();
-    gsl_fit_linear(x, 1, y, 1, N, &c0, &c1, &cov00, &cov01, &cov11, &sumsq);
-    auto t2 = chrono::system_clock::now();
+    auto run_gsl = [&](){ gsl_fit_linear(x, 1, y, 1, N, &c0, &c1, &cov00, &cov01, &cov11, &sumsq); };
 
-    SP::IO::println("Duration: %ms", chrono::duration_cast<chrono::milliseconds>(t2-t1).count());
+    auto dTime = SP::STL::FunctionRunTime(run_gsl);
+
+    SP::IO::println("Duration: %ms", dTime);
+
     SP::IO::println("Best fit: Y = % + % * x", c0, c1);
     SP::IO::println("Covariance matrix:");
     SP::IO::println("[ %, % \n  %, % ]", cov00, cov01, cov01, cov11);
@@ -45,12 +46,14 @@ void Exercise_1::test() const
 
     TF1* linear_function = new TF1("linear_function", "[0] + [1] * x", 0, 6);
     TGraph* g = new TGraph(N, x, y);
+    TFitResultPtr res = nullptr;
 
-    t1 = chrono::system_clock::now();
-    TFitResultPtr res = g->Fit(linear_function, "S");
-    t2 = chrono::system_clock::now();
+    auto run_root = [&](){ res = g->Fit(linear_function, "S"); };
 
-    SP::IO::println("Duration: %ms", chrono::duration_cast<chrono::milliseconds>(t2-t1).count());
+    dTime = SP::STL::FunctionRunTime(run_root);
+
+    SP::IO::println("Duration: %ms", dTime);
+
     TMatrixD cov = res->GetCovarianceMatrix();
     cov.Print();
 
