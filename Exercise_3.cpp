@@ -14,107 +14,55 @@
 #include "TMath.h"
 #include "Math/ProbFunc.h"
 #include "TRandom.h"
+#include "TLine.h"
 
 #include <iostream>
+#include <string>
 
 /**
- * @brief A example took from here:
+ * @brief data/MC plots, mass window cut, counting experiment, Poisson distribution,
+ * Profiled likelihood ratio, p-value, significance.
+ *
+ * Root file took from here:
  * https://indico.cern.ch/event/292887/sessions/55614/attachments/547750/754994/2014_07_25_HASCO_IvovanVulpen.pdf
  *
- * @note: when you optimise the binning / window window selection.
+ * @note: when you optimise the mass window selection.
  * Remember, always optimise the EXPECTED significance :)
  *
  * @name Ex3
  * @author Bowen Zhang
+ * @date 2020/10/06
  *
  */
 
 using namespace std;
 
-void DrawHZZ(int nRebin = 20);
-
-// Count the number of events in mass window
-// PLEASE FILL THIS
-double nData = 0.0;
-double nSig  = 0.0;
-double nBkg  = 0.0;
-double nMu   = 1.0;
-
 void Exercise_3::test() const
 {
+    // ====
+    //  ||
+    //  ||
+    // ====
+
     // Draw the 4-lepton invariant mass distribution
     // ---------------------------------------------
-    DrawHZZ();
 
-    // Pois likelihood p-value, significance
-    // -------------------------------------
-    SP::IO::println("Assume B-Only:\nObserved Pois(lambda=%, N=%) = %, p-value = %, Z = %",
-                    nBkg, nData,
-                    TMath::Poisson(nData, nBkg),
-                    ROOT::Math::poisson_cdf_c(nData, nBkg),
-                    SPEx::GetSignificance(ROOT::Math::poisson_cdf_c(nData, nBkg)));
+    // preparation
+    SPEx::CountingExperiment Ex3;
+    Ex3.nData = 0.0;
+    Ex3.nSig  = 0.0;
+    Ex3.nBkg  = 0.0;
+    Ex3.nMu   = 0.0;
 
-    // Likelihood ratio p-value, significance
-    // Reference: https://link.springer.com/article/10.1140/epjc/s10052-011-1554-0
-    // According to Neyman - Pearson lemma, it is the optimal test statistic
-    // ---------------------------------------------------------------------------
+    int nRebin = 20;
 
-    // The test statistic as a function of n
-    // -------------------------------------
-    auto q0 = [&](double n)
+    int HiggsMass = SP::IO::getInteger("输入Higgs信号质量: ");
+    if (HiggsMass != 125 && HiggsMass != 200)
     {
-        double muHat = (n - nBkg) / nSig;  // maximise L = Pois(mu*s+b | N)
-        double lambda0 = muHat < 0 ? 1.0 : TMath::Poisson(n, nBkg) / TMath::Poisson(n, nBkg + muHat * nSig);
-        return -2 * TMath::Log(lambda0);
-    };
-
-    // Pseudo data generation
-    // ----------------------
-    TH1D* hPLR = new TH1D("Ex3_PLR", "Profile Likelihood Ratio Pseudo Data", 500, 0, 50);
-    int nToys = 1000000; // 1M Toys
-    SP::IO::println("Generating pseudo data...");
-    for (int i = 1; i <= nToys; ++i)
-    {
-        if (i % (nToys / 10) == 0)
-            SP::IO::println("% / %", i, nToys);
-        // Those lines do the job
-        // PLEASE FILL THIS
-        double n = gRandom->PoissonD(nBkg);
-        hPLR->Fill(q0(n));
+        throw std::runtime_error("invalid signal Higgs mass (choose between 125 and 200)");
     }
-
-    // Draw the likelihood ratio distribution
-    // --------------------------------------
-    // PLEASE FILL THIS
-    TCanvas* c = new TCanvas("Ex3_LR", "Likelihood Ratio", 800, 600);
-    c->SetLogy();
-    hPLR->Draw();
-    c->SaveAs("../plots/Ex3_LR.png");
-
-    // Think about how to calculate the p-value and significance
-    // ---------------------------------------------------------
-    // PLEASE FILL THIS
-    double pValue = hPLR->Integral(hPLR->FindBin(nData), hPLR->GetNbinsX()) / hPLR->Integral();
-    double Z = SPEx::GetSignificance(pValue);
-
-    SP::IO::println("Assume B-Only:\nObserved LR(lambda=%, N=%) = %, p-value = %, Z = %",
-                    nBkg, nData, hPLR->GetBinContent(hPLR->FindBin(nData)), pValue, Z);
-
-    /// @todo Use Roostats example to do the calculation ...
-    /// which uses asymptotic appeoach to model the PLR distribution
-    ///
-
-    delete c;
-    delete hPLR;
-}
-
-// Helper functions
-// ----------------
-
-void DrawHZZ(int nRebin)
-{
-    gROOT->SetStyle("ATLAS");
-    gStyle->SetErrorX(0.5);
+    std::string sSignalShort = std::to_string(HiggsMass);
+    std::string sSignal = "h_m4l_Higgs" + sSignalShort + "_fake";
 
     // The RES_PATH is set by tools/SetupEnv.sh
     // ----------------------------------------
@@ -123,12 +71,12 @@ void DrawHZZ(int nRebin)
     // ROOT I/O
     // --------
     TDirectory* dir = gDirectory;
-    TFile* f = new TFile(filePath.c_str(), "READ");
+    TFile* f = TFile::Open(filePath.c_str(), "READ");
 
     // Get Histograms
     // --------------
     dir->cd();
-    TH1D *hSig  = (TH1D*) f->Get("h_m4l_Higgs125_fake")->Clone("h_sig");
+    TH1D *hSig  = (TH1D*) f->Get(sSignal.c_str())->Clone("h_sig");
     TH1D *hBkg  = (TH1D*) f->Get("h_m4l_ZZ_fake")->Clone("h_bgr");
     TH1D *hData = (TH1D*) f->Get("h_m4l_data_fake")->Clone("h_fake");
     f->Close();
@@ -152,14 +100,14 @@ void DrawHZZ(int nRebin)
     for (int i = 1; i < hBkg->GetNbinsX(); i++)
         hSPlusB->SetBinContent( i, hSig->GetBinContent(i) + hBkg->GetBinContent(i));
 
-    // print mass and number of events in a 10 GeV mass window around 125 GeV
+    // print mass and number of events in a mass window around 125 GeV
     // ----------------------------------------------------------------------
-    double mass4l = 0.;
+    double mass4l_i = 0.;
     double nSig_i = 0.;
     double nBkg_i = 0.;
     double nData_i = 0.;
     for (int i = 1; i< hBkg->GetNbinsX(); i++) {
-        mass4l = hData->GetBinCenter(i);
+        mass4l_i = hData->GetBinCenter(i);
         nSig_i  = hSig->GetBinContent(i);
         nBkg_i  = hBkg->GetBinContent(i);
         nData_i = hData->GetBinContent(i);
@@ -167,14 +115,14 @@ void DrawHZZ(int nRebin)
         // Can you optimise the mass window
         // PLEASE FILL THIS
         double width = 10.;
-        if (std::fabs(mass4l - 125.) < width) {
+        if (std::fabs(mass4l_i - (double)HiggsMass) < width) {
             SP::IO::println("Bin %: mass = % | Nsig = %  Nbgr = % and Ndata = %",
-                            i, mass4l, nSig_i, nBkg_i, nData_i);
+                            i, mass4l_i, nSig_i, nBkg_i, nData_i);
             // Count the number of events in mass window
             // PLEASE FILL THIS
-            nData += nData_i;
-            nBkg  += nBkg_i;
-            nSig  += nSig_i;
+            Ex3.nData += nData_i;
+            Ex3.nBkg  += nBkg_i;
+            Ex3.nSig  += nSig_i;
         }
     }
 
@@ -207,8 +155,84 @@ void DrawHZZ(int nRebin)
     le2->SetTextSize(0.05);
     l->Draw();
 
-    c->SaveAs("../plots/Ex3_m4l.png");
+    c->SaveAs(std::string("../plots/Ex3_m4l_H" + sSignalShort + ".png").c_str());
 
     delete c;
     delete l;
+
+
+    // =======
+    //  || ||
+    //  || ||
+    // =======
+
+    // H0: N ~ Pois(mu=0)
+    // H1: N ~ Pois(mu>0)
+    // ------------------
+
+    // Use the number of events as test statistic
+    // p-value, significance
+    // ------------------------------------------
+    SP::IO::println("Observed Pois(lambda=%, N=%) = %, p-value = %, Z = %",
+                    Ex3.nBkg, Ex3.nData,
+                    TMath::Poisson(Ex3.nData, Ex3.nBkg),
+                    ROOT::Math::poisson_cdf_c(Ex3.nData, Ex3.nBkg),
+                    SPEx::GetSignificance(ROOT::Math::poisson_cdf_c(Ex3.nData, Ex3.nBkg)));
+
+    // The test statistic as a function of n
+    // -------------------------------------
+    // DEFINED IN ExUtils.h
+
+    // Pseudo data generation
+    // ----------------------
+    TH1D* hPLR = new TH1D("Ex3_PLR", "Profile Likelihood Ratio Pseudo Data", 30000, 0, 30);
+    int nToys = 10000000; // 10M Toys
+    SP::IO::println("Generating pseudo data...");
+    for (int i = 1; i <= nToys; ++i)
+    {
+        if (i % (nToys / 10) == 0)
+            SP::IO::println("% / %", i, nToys);
+        // Those lines do the job
+        // PLEASE FILL THIS
+        double n = gRandom->PoissonD(Ex3.nBkg);
+        hPLR->Fill(Ex3.q0(n));
+    }
+
+    // Define a vertical line at q0(obs)
+    // ---------------------------------
+    double xObs = hPLR->GetBinCenter(hPLR->FindBin(Ex3.q0(Ex3.nData)));
+    SP::IO::println("xObs = %", xObs);
+    TLine* lObs = new TLine(xObs, 0., xObs, hPLR->GetMaximum());
+    lObs->SetLineColor(kRed);
+    lObs->SetLineWidth(2);
+
+    // Think about how to calculate the p-value and significance
+    // ---------------------------------------------------------
+    // PLEASE FILL THIS
+    double pValue = hPLR->Integral(hPLR->FindBin(Ex3.q0(Ex3.nData)), hPLR->GetNbinsX()) / hPLR->Integral();
+    double Z = SPEx::GetSignificance(pValue);
+
+    SP::IO::println("Observed LR(lambda=%, N=%) = %, p-value = %, Z = %",
+                    Ex3.nBkg, Ex3.nData, hPLR->GetBinContent(hPLR->FindBin(Ex3.nData)), pValue, Z);
+
+    // Expected significance?
+    // PLEASE FILL THIS
+
+
+    // Draw the likelihood ratio distribution
+    // --------------------------------------
+    // PLEASE FILL THIS
+    TCanvas* c1 = new TCanvas("Ex3_LR", "Likelihood Ratio", 800, 600);
+    c1->SetLogy();
+
+    hPLR->Rebin(300);
+    hPLR->Draw("HIST");
+    lObs->Draw("SAME");
+
+    // Save the image
+    // --------------
+    c1->SaveAs(std::string("../plots/Ex3_LR_H" + sSignalShort + ".png").c_str());
+
+    delete c1;
+    delete hPLR;
 }

@@ -11,10 +11,13 @@
 #include "TCanvas.h"
 
 /**
- * @brief
+ * @brief Chi-square 最优化
+ * 可能添加 ML 最优化。。
  *
  * @name Ex2
  * @author Bowen Zhang
+ *
+ * @date 2020/10/06
  *
  */
 
