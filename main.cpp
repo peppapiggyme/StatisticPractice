@@ -1,6 +1,7 @@
 #include "ExDef.h"
 #include "Utils.h"
 #include "TROOT.h"
+#include "TStyle.h"
 
 #include <thread>
 #include <mutex>
@@ -23,8 +24,16 @@
  * 现有的例子:
  *  - E1: 线性拟合测试 GSL 和 ROOT
  *  - E2: Chi-square 拟合，最小化
- *  - E3: 画 data/S/B 图，柏松计数实验，PLR
- *  - E4: 空白
+ *  - E3: 计数实验，PLR，显著性
+ *  - E4: 计数实验，PLR，上限
+ *
+ *
+ * 可能会添加：
+ *  - Confidence Interval
+ *  - Maximum likelihood fit
+ *  - 计数实验，添加误差项
+ *  - RooStats 例子，需要创建 workspace
+ *
  *
  * @file main.cpp
  * @author Bowen Zhang
@@ -44,15 +53,14 @@ void PrintInfo();
 // mutex for Testing, no overlap if run multi tests
 // this feature is only for developer
 std::mutex gMutexTest;
+std::mutex gMutexPrint;
 const std::size_t gNTests = 1;
 
 // main function
 int main()
 {
-    // Paintings are not thread safe?
-    gROOT->SetBatch(true);
-
-    PrintInfo();
+    std::thread tPrint(PrintInfo);
+    tPrint.join();
 
     std::vector<std::thread> vThreads;
 
@@ -62,7 +70,7 @@ int main()
     std::for_each(vThreads.begin(), vThreads.end(), [](std::thread& t){ t.join(); });
 }
 
-// print info
+// print info, also set up ROOT
 void PrintInfo()
 {
     auto printFrameLine = []()
@@ -74,13 +82,23 @@ void PrintInfo()
     SP::IO::println(" | Welcome to HEP Statistics Practice Program | ");    printEmptyLine();
     SP::IO::println(" |                        Author: Bowen Zhang | ");    printEmptyLine();
     printFrameLine();
+
+    gMutexPrint.lock();
+
+    // Paintings are not thread safe?
+    gROOT->SetBatch(true);
+
+    // Set ATLAS style
+    gROOT->SetStyle("ATLAS");
+    gStyle->SetErrorX(0.5);
+
+    gMutexPrint.unlock();
 }
 
 // do excercises here
 void Test()
 {
     gMutexTest.lock();
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
     SP::ExFactoryCollection ExCol;
     ExCol.setExFacts();
