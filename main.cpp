@@ -27,14 +27,15 @@
  *  - E3: 计数实验，PLR，显著性
  *  - E4: 计数实验，PLR，上限
  *  - E5: RooStats 创建 Workspace
+ *  - E6: RooStats 从 Histogram 到结果
  *
  *
  * 可能会添加：
  *  - Confidence Interval
  *  - Maximum likelihood fit
  *  - 计数实验，添加误差项
- *  - RooStats 例子，需要创建 workspace
- *
+ *  - 使用 Minuit 的例子
+ *  - http://personalpages.to.infn.it/~ramello/statis/expFit.cc
  *
  * @file main.cpp
  * @author Bowen Zhang
@@ -81,7 +82,7 @@ void PrintInfo()
 
     printFrameLine();                                                       printEmptyLine();
     SP::IO::println(" | Welcome to HEP Statistics Practice Program | ");    printEmptyLine();
-    SP::IO::println(" |                        Author: Bowen Zhang | ");    printEmptyLine();
+    SP::IO::println(" |            Copyright (C) 2020  Bowen Zhang | ");    printEmptyLine();
     printFrameLine();
 
     gMutexPrint.lock();
