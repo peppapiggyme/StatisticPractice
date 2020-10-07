@@ -16,6 +16,7 @@
 #include "Exercise_3.h"
 #include "Exercise_4.h"
 #include "Exercise_5.h"
+#include "Exercise_6.h"
 #include "Utils.h"
 
 #include <vector>
@@ -68,5 +69,6 @@ ADDNEWEXFACTORY(2);
 ADDNEWEXFACTORY(3);
 ADDNEWEXFACTORY(4);
 ADDNEWEXFACTORY(5);
+ADDNEWEXFACTORY(6);
 
 #endif // EXDEF_H
