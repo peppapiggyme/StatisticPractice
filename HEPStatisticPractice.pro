@@ -20,6 +20,8 @@ SOURCES += \
         Exercise_2.cpp \
         Exercise_3.cpp \
         Exercise_4.cpp \
+        Exercise_5.cpp \
+        Exercise_6.cpp \
         main.cpp
 
 # Default rules for deployment.
@@ -35,24 +37,28 @@ HEADERS += \
     Exercise_2.h \
     Exercise_3.h \
     Exercise_4.h \
+    Exercise_5.h \
+    Exercise_6.h \
     Utils.h
 
 # For NJU HEP virtual machine
 # ---------------------------
+
 # install gsl
 LIBS += -L/usr/local/lib -lgsl -lgslcblas
 INCLUDEPATH += /usr/local/include/gsl
 
 # install ROOT
-LIBS += -L/usr/lib64/root -lCore -lImt -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lROOTVecOps -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lMultiProc -lROOTDataFrame -lpthread -lm -ldl
+LIBS += -L/usr/lib64/root -lCore -lImt -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lROOTVecOps -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lMultiProc -lROOTDataFrame -lHistFactory -lRooFit -lRooFitCore -lRooFitMore -lRooStats -lpthread -lm -ldl
 INCLUDEPATH += /usr/include/root
 
 # For my MacBook
 # --------------
-## install gsl
+
+# install gsl
 #LIBS += -L/usr/local/Cellar/gsl/2.6/lib -lgsl -lgslcblas
 #INCLUDEPATH += /usr/local/Cellar/gsl/2.6/include
 
 ## install ROOT
-#LIBS += -L/usr/local/lib/root -lCore -lImt -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lROOTVecOps -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lMultiProc -lROOTDataFrame -stdlib=libc++ -lpthread -lm -ldl
+#LIBS += -L/usr/local/lib/root -lCore -lImt -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lROOTVecOps -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lMultiProc -lROOTDataFrame -lHistFactory -lRooFit -lRooFitCore -lRooFitMore -lRooStats -stdlib=libc++ -lpthread -lm -ldl
 #INCLUDEPATH += /usr/local/Cellar/root/6.22.00_1/include/root
