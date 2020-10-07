@@ -15,6 +15,7 @@
 #include "Math/ProbFunc.h"
 #include "TRandom.h"
 #include "TLine.h"
+#include "TGraph.h"
 
 #include <iostream>
 
@@ -128,6 +129,9 @@ void Exercise_4::test() const
     double nScan = 10.0;
     double nMuMax = 1.0;
     int nCounter = 0;
+    double x[(int)nScan];
+    double y[(int)nScan];
+
     while (Ex4.nMu < nMuMax)
     {
         // Print current mu
@@ -137,7 +141,7 @@ void Exercise_4::test() const
         // Generate pseudo data
         // --------------------
         TH1D* hPLR = new TH1D("Ex4_PLR", "Profile Likelihood Ratio Pseudo Data", 30000, 0, 30);
-        int nToys = 10000000; // 10M Toys
+        int nToys = 1000000; // 10M Toys
         SP::IO::println("Generating pseudo data...");
         for (int i = 1; i <= nToys; ++i)
         {
@@ -151,7 +155,7 @@ void Exercise_4::test() const
         // Generate pseudo data (B-only) for expected limit
         // ------------------------------------------------
         TH1D* hPLR_BOnly = new TH1D("Ex4_PLR_BOnly", "Profile Likelihood Ratio Pseudo Data", 30000, 0, 30);
-        nToys = 5000000; // 5M Toys
+        nToys = 500000; // 5M Toys
         SP::IO::println("Generating pseudo data...");
         for (int i = 1; i <= nToys; ++i)
         {
@@ -181,6 +185,9 @@ void Exercise_4::test() const
         // Calculate p-value
         // -----------------
         double pValue = hPLR->Integral(hPLR->FindBin(Ex4.qMu(Ex4.nData)), hPLR->GetNbinsX()) / hPLR->Integral();
+
+        x[nCounter] = Ex4.nMu;
+        y[nCounter] = pValue;
 
         // Summary print out
         // -----------------
@@ -216,4 +223,23 @@ void Exercise_4::test() const
         delete lObs;
     }
 
+    TGraph* g = new TGraph((int)nScan, x, y);
+    TGraph* gForEval = new TGraph((int)nScan, y, x);
+    g->SetLineColor(kBlack);
+    g->SetLineWidth(2);
+    TLine* pValue_0p05 = new TLine(0.0, 0.05, 0.9, 0.05);
+    pValue_0p05->SetLineColor(kRed);
+    pValue_0p05->SetLineWidth(2);
+
+    TCanvas* c = new TCanvas("Ex4_pValue", "mu Scan", 800, 600);
+    g->Draw();
+    pValue_0p05->Draw("SAME");
+    c->SaveAs("../plots/Ex4_MuScan.png");
+
+    SP::IO::println("Upper limit = %", gForEval->Eval(0.05));
+
+    delete g;
+    delete gForEval;
+    delete pValue_0p05;
+    delete c;
 }
