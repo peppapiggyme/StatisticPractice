@@ -19,13 +19,14 @@
  *  - CERN ROOT
  *
  * 用法:
- *  ./HEPStatisticPractise
+ *  ./HEPStatisticPractice
  *
  * 现有的例子:
  *  - E1: 线性拟合测试 GSL 和 ROOT
  *  - E2: Chi-square 拟合，最小化
  *  - E3: 计数实验，PLR，显著性
  *  - E4: 计数实验，PLR，上限
+ *  - E5: RooStats 创建 Workspace
  *
  *
  * 可能会添加：
