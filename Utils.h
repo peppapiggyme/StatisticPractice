@@ -131,7 +131,9 @@ namespace SP
             std::for_each(vec.begin(), vec.end(), [](T& p){ delete p; p = nullptr; });
             vec.clear();
         }
-
+        /**
+         * @brief Measure function runtime
+         */
         template<typename Tfunc, typename ...Targs>
         static long long FunctionRunTime(Tfunc f, Targs... args)
         {
@@ -139,6 +141,11 @@ namespace SP
             f(args...);
             auto t2 = steady_clock::now();
             return duration_cast<milliseconds>(t2-t1).count();
+        }
+
+        static string GetFilePath(const std::string& sFileName)
+        {
+            return string(getenv("RES_PATH")) + sFileName;
         }
     };
 }

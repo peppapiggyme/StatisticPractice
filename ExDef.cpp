@@ -13,6 +13,7 @@ void SP::ExFactoryCollection::setExFacts()
     ExFacts.push_back(INSTANCE_EXFACTORY(4));
     ExFacts.push_back(INSTANCE_EXFACTORY(5));
     ExFacts.push_back(INSTANCE_EXFACTORY(6));
+    ExFacts.push_back(INSTANCE_EXFACTORY(7));
 }
 
 
