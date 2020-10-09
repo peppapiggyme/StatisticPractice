@@ -125,14 +125,16 @@ void Exercise_4::test() const
     // Use profiled likelihood ration as the test statistic
     // ----------------------------------------------------
 
-    Ex4.nMu = 0.0;
-    double nScan = 10.0;
-    double nMuMax = 1.0;
+    Ex4.nMu = 0.1;
+    double nScan = 11.0;
+    double nMuMin = Ex4.nMu;
+    double nMuMax = 0.6;
     int nCounter = 0;
     double x[(int)nScan];
     double y[(int)nScan];
+    double yExp[(int)nScan];
 
-    while (Ex4.nMu < nMuMax)
+    while (nCounter < nScan)
     {
         // Print current mu
         // ----------------
@@ -185,15 +187,17 @@ void Exercise_4::test() const
         // Calculate p-value
         // -----------------
         double pValue = hPLR->Integral(hPLR->FindBin(Ex4.qMu(Ex4.nData)), hPLR->GetNbinsX()) / hPLR->Integral();
+        double pValueExp = hPLR->Integral(hPLR->FindBin(xExp), hPLR->GetNbinsX()) / hPLR->Integral();
 
         x[nCounter] = Ex4.nMu;
         y[nCounter] = pValue;
+        yExp[nCounter] = pValueExp;
 
         // Summary print out
         // -----------------
         SP::IO::println("Summary: mu=%, p-value=%", Ex4.nMu, pValue);
 
-        Ex4.nMu += nMuMax / nScan;
+        Ex4.nMu += (nMuMax - nMuMin) / (nScan - 1);
         nCounter++;
 
         // Draw the histogram (do not do re-binning before extracting the pvalue, etc.)
@@ -203,7 +207,7 @@ void Exercise_4::test() const
         hPLR->Draw("HIST");
         hPLR_BOnly->Rebin(30);
         hPLR_BOnly->SetLineColor(kBlue);
-        hPLR_BOnly->Draw("HIST SAME");
+        //hPLR_BOnly->Draw("HIST SAME");
         lObs->SetLineColor(kRed);
         lObs->SetLineWidth(2);
         lObs->Draw("SAME");
@@ -224,22 +228,35 @@ void Exercise_4::test() const
     }
 
     TGraph* g = new TGraph((int)nScan, x, y);
+    TGraph* gExp = new TGraph((int)nScan, x, yExp);
     TGraph* gForEval = new TGraph((int)nScan, y, x);
+    TGraph* gExpForEval = new TGraph((int)nScan, yExp, x);
+    g->SetMinimum(0.0);
+
+    // styles
     g->SetLineColor(kBlack);
     g->SetLineWidth(2);
-    TLine* pValue_0p05 = new TLine(0.0, 0.05, 0.9, 0.05);
+    g->SetMarkerSize(0);
+    gExp->SetLineColor(kBlue);
+    gExp->SetLineWidth(2);
+    gExp->SetMarkerSize(0);
+
+    TLine* pValue_0p05 = new TLine(g->GetXaxis()->GetXmin(), 0.05, g->GetXaxis()->GetXmax(), 0.05);
     pValue_0p05->SetLineColor(kRed);
     pValue_0p05->SetLineWidth(2);
 
     TCanvas* c = new TCanvas("Ex4_pValue", "mu Scan", 800, 600);
     g->Draw();
+    gExp->Draw("SAME");
     pValue_0p05->Draw("SAME");
     c->SaveAs("../plots/Ex4_MuScan.png");
 
-    SP::IO::println("Upper limit = %", gForEval->Eval(0.05));
+    SP::IO::println("Upper limit = %, Expected upper limit = %", gForEval->Eval(0.05), gExpForEval->Eval(0.05));
 
     delete g;
+    delete gExp;
     delete gForEval;
+    delete gExpForEval;
     delete pValue_0p05;
     delete c;
 }
