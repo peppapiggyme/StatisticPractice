@@ -12,6 +12,7 @@
 
 #include "TH1.h"
 #include "TF1.h"
+#include "TGraph.h"
 
 
 namespace SPEx
@@ -85,13 +86,16 @@ namespace SPEx
          * muHat is the maximum likelihood estimator of mu, in this simple case,
          * it must be (n - bkg) / sig
          *
+         * for a proper fit, the nData is not a single value but a Poisson distribution maximum at n_obs
+         * then the likelihood fit must be performed on this set of nData.
+         *
          * @ref https://link.springer.com/article/10.1140/epjc/s10052-011-1554-0
          *
          */
         template<typename T>
         double q0(T n)
         {
-            double muHat = (n - nBkg) / nSig;  // maximise L = Pois(mu*s+b | N)
+            double muHat = ((double)n - nBkg) / nSig;  // maximise L = Pois(mu*s+b | N)
             if (muHat < 0.0)
                 return 0.;
             else
@@ -110,7 +114,7 @@ namespace SPEx
         template<typename T>
         double qMu(T n)
         {
-            double muHat = (n - nBkg) / nSig;
+            double muHat = ((double)n - nBkg) / nSig;
             if (muHat <= nMu) {
                 if (muHat < 0.0) {
                     return -2 * TMath::Log(TMath::Poisson(n, nMu*nSig+nBkg) / TMath::Poisson(n, nBkg));

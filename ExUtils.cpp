@@ -13,14 +13,14 @@ double SPEx::GetChiSquare(TH1* h, TF1* f, bool useRootStyle)
         double x2_i = 0.0;
         double obs_i = h->GetBinContent(i);
         double exp_i = f->Eval(h->GetXaxis()->GetBinCenter(i));
-        if (obs_i > 1e-12)  // is zero
+        if (obs_i > 1e-12)  // is not zero
             if (useRootStyle)
                 x2_i = (obs_i - exp_i) * (obs_i - exp_i) / std::fabs(obs_i);
             else
                 x2_i = (obs_i - exp_i) * (obs_i - exp_i) / std::fabs(exp_i);
         else
         { 
-            x2_i = 0;
+            x2_i += 0;
             n_zeros++;
         }
         
