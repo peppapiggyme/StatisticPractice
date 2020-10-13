@@ -28,7 +28,6 @@ void Exercise_2::test() const
     // The RES_PATH is set by tools/SetupEnv.sh
     // ----------------------------------------
     std::string filePath = std::string(getenv("RES_PATH")) + "Ex2.root";
-    // std::string filePath = std::string(getenv("RES_PATH")) + "Ex2_1k.root";
 
     // ROOT I/O
     // --------
@@ -67,8 +66,7 @@ void Exercise_2::test() const
         
     // Calculate chi-square
     // --------------------
-    double x2 = SPEx::GetChiSquare(h, func);
-    SP::IO::println("p0 = %, Chi2 = %", p, x2);
+    SP::IO::println("p0 = %, ROOT Chi2 = %, REAL Chi2 = %", p, SPEx::GetChiSquare(h, func), SPEx::GetChiSquare(h, func, false));
 
     // here use ROOT style Chi square
     // ------------------------------
@@ -110,7 +108,7 @@ void Exercise_2::test() const
         p = (double)h->GetNbinsX() / SumOfInvYi;
         func->SetParameter(0, p);
 
-        SP::IO::println("After x2 fit: (ROOT style)\np0 = %, Chi2 = %", p, SPEx::GetChiSquare(h, func));
+        SP::IO::println("\nAfter x2 fit: (ROOT style)\np0 = %, Chi2 = %", p, SPEx::GetChiSquare(h, func));
     };
 
     // actual chi square
@@ -125,7 +123,7 @@ void Exercise_2::test() const
         p = sqrt(SumOfYi2 / (double)h->GetNbinsX());
         func->SetParameter(0, p);
 
-        SP::IO::println("After x2 fit: (Real definition)\np0 = %, Chi2 = %", p, SPEx::GetChiSquare(h, func, false));
+        SP::IO::println("\nAfter x2 fit: (Real definition)\np0 = %, Chi2 = %", p, SPEx::GetChiSquare(h, func, false));
     };
 
 
@@ -134,6 +132,8 @@ void Exercise_2::test() const
     auto run_root_fit = [&]()
     {
         h->Fit(func);
+        // h->Fit(func, "L");
+        // h->Fit(func, "P");
     };
 
     // Check durations
