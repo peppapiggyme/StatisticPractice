@@ -52,11 +52,7 @@ void PrintInfo();
 
 
 /// fields
-// mutex for Testing, no overlap if run multi tests
-// this feature is only for developer
-std::mutex gMutexTest;
 std::mutex gMutexPrint;
-const std::size_t gNTests = 1;
 
 // main function
 int main()
@@ -64,12 +60,9 @@ int main()
     std::thread tPrint(PrintInfo);
     tPrint.join();
 
-    std::vector<std::thread> vThreads;
+    Test();
 
-    for (std::size_t i = 0; i < gNTests; ++i)
-        vThreads.emplace_back(Test);
-
-    std::for_each(vThreads.begin(), vThreads.end(), [](std::thread& t){ t.join(); });
+    return EXIT_SUCCESS;
 }
 
 // print info, also set up ROOT
@@ -100,8 +93,6 @@ void PrintInfo()
 // do excercises here
 void Test()
 {
-    gMutexTest.lock();
-
     SP::ExFactoryCollection ExCol;
     ExCol.setExFacts();
     const auto& ExFacts = ExCol.getExFacts();
@@ -114,7 +105,6 @@ void Test()
             if (i > (int)ExFacts.size() || i < 1)
             {
                 std::cerr << "练习" << i << "不存在， 请重试！\n";
-                cont = SP::IO::doContinue();
                 continue;
             }
 
@@ -124,9 +114,8 @@ void Test()
 
             cont = SP::IO::doContinue();
         } catch (const std::exception& e) {
-            gMutexTest.unlock();
             std::cerr << e.what() << '\n';
+            cont = SP::IO::doContinue();
         }
     }
-    gMutexTest.unlock();
 }

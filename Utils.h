@@ -142,7 +142,9 @@ namespace SP
             auto t2 = steady_clock::now();
             return duration_cast<milliseconds>(t2-t1).count();
         }
-
+        /**
+         * @brief Get relative path to the res/ directory
+         */
         static string GetFilePath(const std::string& sFileName)
         {
             return string(getenv("RES_PATH")) + sFileName;
