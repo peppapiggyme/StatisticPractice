@@ -13,12 +13,16 @@ usage:
 
 import random
 from ROOT import TFile, TH1D, TF1
-
+from ROOT import TRandom3
 
 def GenEx2():
-    h = TH1D("flat", "y = 10", 100, 0, 100)
+    r = TRandom3()
+    h = TH1D("flat", "y = 100", 100, 0, 100)
     for i in range(0, h.GetNbinsX()):
-        for _ in range(10 + random.randint(-4, 4)):
+        n = int(r.Gaus(0, 30))
+        n = min(30, n)
+        n = max(-30, n)
+        for _ in range(100 + n):
             h.Fill(i)
 
     out = TFile("res/Ex2.root", "recreate")
