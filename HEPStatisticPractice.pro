@@ -14,6 +14,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        AtlasOpenData/AnaHyy.cpp \
         ExDef.cpp \
         ExUtils.cpp\
         Exercise_1.cpp \
@@ -22,6 +23,7 @@ SOURCES += \
         Exercise_4.cpp \
         Exercise_5.cpp \
         Exercise_6.cpp \
+        Exercise_7.cpp \
         main.cpp
 
 # Default rules for deployment.
@@ -30,6 +32,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    AtlasOpenData/AnaHyy.h \
+    AtlasOpenData/AnaHyyBase.h \
     ExDef.h \
     ExUtils.h \
     ExerciseBase.h \
@@ -39,6 +43,7 @@ HEADERS += \
     Exercise_4.h \
     Exercise_5.h \
     Exercise_6.h \
+    Exercise_7.h \
     Utils.h
 
 # For NJU HEP virtual machine
@@ -55,7 +60,7 @@ INCLUDEPATH += /usr/include/root
 # For my MacBook
 # --------------
 
-# install gsl
+## install gsl
 #LIBS += -L/usr/local/Cellar/gsl/2.6/lib -lgsl -lgslcblas
 #INCLUDEPATH += /usr/local/Cellar/gsl/2.6/include
 

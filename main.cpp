@@ -22,12 +22,13 @@
  *  ./HEPStatisticPractice
  *
  * 现有的例子:
- *  - E1: 线性拟合测试 GSL 和 ROOT
+ *  - E1: 复习 ROOT 直方图 Fit 功能
  *  - E2: Chi-square 拟合，最小化
  *  - E3: 计数实验，PLR，显著性
  *  - E4: 计数实验，PLR，上限
  *  - E5: RooStats 创建 Workspace
  *  - E6: RooStats 从 Histogram 到结果
+ *  - E7: OpenData 实践，MakeClass
  *
  *
  * 可能会添加：
