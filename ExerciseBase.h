@@ -19,7 +19,7 @@ public:
     virtual void test() const = 0;
 };
 
-#define DEFINENEWEXERCISE(I) \
+#define DEFINE_NEW_EXERCISE(I) \
     class Exercise_##I : public ExerciseBase \
     { \
     public: \

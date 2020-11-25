@@ -11,14 +11,9 @@
  * @date 2020/10/03
  */
 
-#include "Exercise_1.h"
-#include "Exercise_2.h"
-#include "Exercise_3.h"
-#include "Exercise_4.h"
-#include "Exercise_5.h"
-#include "Exercise_6.h"
-#include "Exercise_7.h"
 #include "Utils.h"
+#include "ExerciseBase.h"
+#include "Exercise_1.h"
 
 #include <vector>
 
@@ -52,7 +47,7 @@ namespace SP
     };
 }
 
-#define ADDNEWEXFACTORY(I) \
+#define ADD_NEW_EXFACTORY(I) \
     namespace SP { \
     class ExFactory_##I : public ExFactory \
     { \
@@ -65,12 +60,6 @@ namespace SP
 
 #define INSTANCE_EXFACTORY(I) new SP::ExFactory_##I()
 
-ADDNEWEXFACTORY(1);
-ADDNEWEXFACTORY(2);
-ADDNEWEXFACTORY(3);
-ADDNEWEXFACTORY(4);
-ADDNEWEXFACTORY(5);
-ADDNEWEXFACTORY(6);
-ADDNEWEXFACTORY(7);
+ADD_NEW_EXFACTORY(1);
 
 #endif // EXDEF_H

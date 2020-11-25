@@ -8,3 +8,4 @@ mkdir -p ../plots/
 export SOURCEPATH=${PWD}/
 export RES_PATH=${PWD}/res/
 export TOOLS_PATH=${PWD}/tools/
+export PATH=$PATH:${TOOLS_PATH}

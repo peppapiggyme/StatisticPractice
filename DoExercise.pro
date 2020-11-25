@@ -14,16 +14,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        AtlasOpenData/AnaHyy.cpp \
         ExDef.cpp \
-        ExUtils.cpp\
+        ExUtils.cpp \
         Exercise_1.cpp \
-        Exercise_2.cpp \
-        Exercise_3.cpp \
-        Exercise_4.cpp \
-        Exercise_5.cpp \
-        Exercise_6.cpp \
-        Exercise_7.cpp \
         main.cpp
 
 # Default rules for deployment.
@@ -32,18 +25,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    AtlasOpenData/AnaHyy.h \
-    AtlasOpenData/AnaHyyBase.h \
     ExDef.h \
     ExUtils.h \
     ExerciseBase.h \
     Exercise_1.h \
-    Exercise_2.h \
-    Exercise_3.h \
-    Exercise_4.h \
-    Exercise_5.h \
-    Exercise_6.h \
-    Exercise_7.h \
     Utils.h
 
 ## install gsl
