@@ -46,24 +46,11 @@ HEADERS += \
     Exercise_7.h \
     Utils.h
 
-# For NJU HEP virtual machine
-# ---------------------------
-
-# install gsl
-LIBS += -L/usr/local/lib -lgsl -lgslcblas
-INCLUDEPATH += /usr/local/include/gsl
+## install gsl
+#LIBS += -L/usr/local/lib -lgsl -lgslcblas
+#INCLUDEPATH += /usr/local/include/gsl
 
 # install ROOT
-LIBS += -L/usr/lib64/root -lCore -lImt -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lROOTVecOps -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lMultiProc -lROOTDataFrame -lHistFactory -lRooFit -lRooFitCore -lRooFitMore -lRooStats -lpthread -lm -ldl
-INCLUDEPATH += /usr/include/root
+LIBS += -L$$(ROOTSYS)/lib -lCore -lImt -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lROOTVecOps -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lMultiProc -lROOTDataFrame -lHistFactory -lRooFit -lRooFitCore -lRooFitMore -lRooStats -lpthread -lm -ldl
+INCLUDEPATH += $$(ROOTSYS)/include 
 
-# For my MacBook
-# --------------
-
-## install gsl
-#LIBS += -L/usr/local/Cellar/gsl/2.6/lib -lgsl -lgslcblas
-#INCLUDEPATH += /usr/local/Cellar/gsl/2.6/include
-
-## install ROOT
-#LIBS += -L/usr/local/lib/root -lCore -lImt -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lROOTVecOps -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lMultiProc -lROOTDataFrame -lHistFactory -lRooFit -lRooFitCore -lRooFitMore -lRooStats -stdlib=libc++ -lpthread -lm -ldl
-#INCLUDEPATH += /usr/local/Cellar/root/6.22.00_1/include/root

@@ -53,7 +53,7 @@ void Exercise_2::test() const
     // Set its parameter and calculate the chi-square
     // value (observed values from histogram)
     // ----------------------------------------------
-    double p = 10;
+    double p = 100;
 
     func->SetParameter(0, p);
     
