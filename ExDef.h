@@ -14,6 +14,17 @@
 #include "Utils.h"
 #include "ExerciseBase.h"
 #include "Exercise_1.h"
+#include "Exercise_2.h"
+#include "Exercise_3.h"
+#include "Exercise_4.h"
+#include "Exercise_5.h"
+#include "Exercise_6.h"
+#include "Exercise_7.h"
+#include "Exercise_8.h"
+#include "Exercise_9.h"
+#include "Exercise_10.h"
+#include "Exercise_11.h"
+#include "Exercise_12.h"
 
 #include <vector>
 
@@ -61,5 +72,16 @@ namespace SP
 #define INSTANCE_EXFACTORY(I) new SP::ExFactory_##I()
 
 ADD_NEW_EXFACTORY(1);
+ADD_NEW_EXFACTORY(2);
+ADD_NEW_EXFACTORY(3);
+ADD_NEW_EXFACTORY(4);
+ADD_NEW_EXFACTORY(5);
+ADD_NEW_EXFACTORY(6);
+ADD_NEW_EXFACTORY(7);
+ADD_NEW_EXFACTORY(8);
+ADD_NEW_EXFACTORY(9);
+ADD_NEW_EXFACTORY(10);
+ADD_NEW_EXFACTORY(11);
+ADD_NEW_EXFACTORY(12);
 
 #endif // EXDEF_H

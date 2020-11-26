@@ -17,6 +17,17 @@ SOURCES += \
         ExDef.cpp \
         ExUtils.cpp \
         Exercise_1.cpp \
+        Exercise_2.cpp \
+        Exercise_3.cpp \
+        Exercise_4.cpp \
+        Exercise_5.cpp \
+        Exercise_6.cpp \
+        Exercise_7.cpp \
+        Exercise_8.cpp \
+        Exercise_9.cpp \
+        Exercise_10.cpp \
+        Exercise_11.cpp \
+        Exercise_12.cpp \
         main.cpp
 
 # Default rules for deployment.
@@ -29,6 +40,17 @@ HEADERS += \
     ExUtils.h \
     ExerciseBase.h \
     Exercise_1.h \
+    Exercise_2.h \
+    Exercise_3.h \
+    Exercise_4.h \
+    Exercise_5.h \
+    Exercise_6.h \
+    Exercise_7.h \
+    Exercise_8.h \
+    Exercise_9.h \
+    Exercise_10.h \
+    Exercise_11.h \
+    Exercise_12.h \
     Utils.h
 
 ## install gsl
@@ -36,6 +58,7 @@ HEADERS += \
 #INCLUDEPATH += /usr/local/include/gsl
 
 # install ROOT
-LIBS += -L$$(ROOTSYS)/lib -lCore -lImt -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lROOTVecOps -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lMultiProc -lROOTDataFrame -lHistFactory -lRooFit -lRooFitCore -lRooFitMore -lRooStats -lpthread -lm -ldl
+#LIBS += -L$$(ROOTSYS)/lib -lCore -lImt -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lROOTVecOps -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lMultiProc -lROOTDataFrame -lHistFactory -lRooFit -lRooFitCore -lRooFitMore -lRooStats -lpthread -lm -ldl
+LIBS += -L$$(ROOTSYS)/lib -lCore -lImt -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lROOTVecOps -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lMultiProc -lROOTDataFrame -lpthread -lm -ldl
 INCLUDEPATH += $$(ROOTSYS)/include 
 

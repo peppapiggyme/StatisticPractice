@@ -20,14 +20,18 @@
  *  ./DoExercise
  *
  * 现有的例子:
- *  - E1: 
- *  - E2: 
- *  - E3: 
- *  - E4: 
+ *  - E1: Likelihood fit
+ *  - E2: Chi-Square fit
+ *  - E3: Goodness of fit (to check)
+ *  - E4: Measurement combination 
  *  - E5: 
  *  - E6: 
- *  - E7: 
- *
+ *  - E7:
+ * 
+ * Mostly took from this wonderful ATL:
+ * https://indico.cern.ch/event/545212/
+ * 
+ * It was not lisenced but all credits to L.Moneta and L. Lyons
  *
  *
  * @file main.cpp
