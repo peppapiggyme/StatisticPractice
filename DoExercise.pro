@@ -14,6 +14,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        AtlasOpenData\HZZAna.cpp \
         ExDef.cpp \
         ExUtils.cpp \
         Exercise_1.cpp \
@@ -36,6 +37,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    AtlasOpenData\HZZAna.h \
+    AtlasOpenData\HZZAnaBase.h \
     ExDef.h \
     ExUtils.h \
     ExerciseBase.h \

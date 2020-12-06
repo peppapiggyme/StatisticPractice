@@ -24,15 +24,24 @@
  *  - E2: Chi-Square fit
  *  - E3: Goodness of fit (to check)
  *  - E4: Measurement combination 
- *  - E5: 
- *  - E6: 
- *  - E7:
+ *  - E5: HZZ Analysis (without plotting)
+ *  - E6: Hypothesis test
+ *  - E7: Inverse hypothesis test
+ *  - E8: TBD
+ *  - E9: TBD
+ *  - E10: TBD
+ *  - E11: TBD
+ *  - E12: TBD
  * 
- * Mostly took from this wonderful ATL:
+ * Statistical analysis examples are mostly took from this wonderful ATL:
  * https://indico.cern.ch/event/545212/
- * 
- * It was not lisenced but all credits to L.Moneta and L. Lyons
  *
+ * all credits to L.Moneta and L. Lyons
+ * 
+ * And thanks to the amazing Atlas open data
+ * https://github.com/atlas-outreach-data-tools/atlas-outreach-cpp-framework-13tev
+ * 
+ * all credits to the developers 
  *
  * @file main.cpp
  * @author Bowen Zhang
