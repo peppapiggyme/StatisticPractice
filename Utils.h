@@ -147,7 +147,11 @@ namespace SP
          */
         static string GetFilePath(const std::string& sFileName)
         {
-            return string(getenv("RES_PATH")) + sFileName;
+            const char* pPath = getenv("RES_PATH");
+            if (!pPath)
+                throw std::runtime_error("RES_PATH is empty. You forgot to do [source tools/SetupEnv.sh]");
+            string sResourcePath{pPath};
+            return sResourcePath + sFileName;
         }
     };
 }
