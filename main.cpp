@@ -5,6 +5,7 @@
 
 #include <thread>
 #include <mutex>
+#include <list>
 
 /**
  * 本程序:
@@ -18,20 +19,6 @@
  *
  * 用法:
  *  ./DoExercise
- *
- * 现有的例子:
- *  - E1: Likelihood fit
- *  - E2: Chi-Square fit
- *  - E3: Goodness of fit (to check)
- *  - E4: Measurement combination 
- *  - E5: HZZ Analysis (without plotting)
- *  - E6: Hypothesis test
- *  - E7: Inverse hypothesis test
- *  - E8: TBD
- *  - E9: TBD
- *  - E10: TBD
- *  - E11: TBD
- *  - E12: TBD
  * 
  * Statistical analysis examples are mostly took from this wonderful ATL:
  * https://indico.cern.ch/event/545212/
@@ -47,7 +34,6 @@
  * @author Bowen Zhang
  * @date 2020/10/03
  *
- * @todo 打印所有可供选择的例子 -> printEx()
  */
 
 
@@ -78,11 +64,21 @@ void PrintInfo()
     { SP::IO::println(" *---------------------------------* "); };
     auto printEmptyLine = []()
     { SP::IO::println(" |                                 | "); };
+    auto printExercises = []()
+    { SP::IO::println("\nChoose from:\n"
+                      " (1) Method of Maximum Likelihood\n"
+                      " (2) Method of Least Square\n"
+                      " (3) Goodness of fit\n"
+                      " (4) Combination of measurements\n"
+                      " (5) Atlas physics analysis (Atlas Open Data: H->ZZ->4l)\n"
+                      " (6) Discovery significance\n"
+                      " (7) Exclusion limits\n"); };
 
     printFrameLine();                                            printEmptyLine();
     SP::IO::println(" | Welcome to the Practice Program | ");    printEmptyLine();
     SP::IO::println(" | Copyright (C) 2020  Bowen Zhang | ");    printEmptyLine();
     printFrameLine();
+    printExercises();
 
     gMutexPrint.lock();
 
