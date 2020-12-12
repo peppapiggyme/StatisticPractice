@@ -66,13 +66,19 @@ void PrintInfo()
     { SP::IO::println(" |                                 | "); };
     auto printExercises = []()
     { SP::IO::println("\nChoose from:\n"
+                      " (0) ..Exit the program\n"
                       " (1) Method of Maximum Likelihood\n"
                       " (2) Method of Least Square\n"
                       " (3) Goodness of fit\n"
                       " (4) Combination of measurements\n"
                       " (5) Atlas physics analysis (Atlas Open Data: H->ZZ->4l)\n"
                       " (6) Discovery significance\n"
-                      " (7) Exclusion limits\n"); };
+                      " (7) Exclusion limits\n"
+                      " (8) Empty\n"
+                      " (9) Empty\n"
+                      " (10) Empty\n"
+                      " (11) Empty\n"
+                      " (12) Empty\n"); };
 
     printFrameLine();                                            printEmptyLine();
     SP::IO::println(" | Welcome to the Practice Program | ");    printEmptyLine();
@@ -104,13 +110,13 @@ void Test()
     while (cont) {
         try {
             int i = SP::IO::getInteger();
-            if (i > (int)ExFacts.size() || i < 1)
+            if (i >= (int)ExFacts.size() || i < 0)
             {
                 std::cerr << "练习" << i << "不存在， 请重试！\n";
                 continue;
             }
 
-            const auto e = ExFacts[i-1]->Create();
+            const auto e = ExFacts[i]->Create();
             e->test();
             delete e;
 

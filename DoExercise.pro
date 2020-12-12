@@ -17,6 +17,7 @@ SOURCES += \
         AtlasOpenData\HZZAna.cpp \
         ExDef.cpp \
         ExUtils.cpp \
+        Exercise_0.cpp \
         Exercise_1.cpp \
         Exercise_2.cpp \
         Exercise_3.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     ExDef.h \
     ExUtils.h \
     ExerciseBase.h \
+    Exercise_0.h \
     Exercise_1.h \
     Exercise_2.h \
     Exercise_3.h \

@@ -13,6 +13,7 @@
 
 #include "Utils.h"
 #include "ExerciseBase.h"
+#include "Exercise_0.h"
 #include "Exercise_1.h"
 #include "Exercise_2.h"
 #include "Exercise_3.h"
@@ -71,6 +72,7 @@ namespace SP
 
 #define INSTANCE_EXFACTORY(I) new SP::ExFactory_##I()
 
+ADD_NEW_EXFACTORY(0);
 ADD_NEW_EXFACTORY(1);
 ADD_NEW_EXFACTORY(2);
 ADD_NEW_EXFACTORY(3);

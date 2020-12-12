@@ -7,6 +7,7 @@ using namespace SP;
 
 void SP::ExFactoryCollection::setExFacts()
 {
+    ExFacts.push_back(INSTANCE_EXFACTORY(0));
     ExFacts.push_back(INSTANCE_EXFACTORY(1));
     ExFacts.push_back(INSTANCE_EXFACTORY(2));
     ExFacts.push_back(INSTANCE_EXFACTORY(3));
