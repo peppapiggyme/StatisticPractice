@@ -44,7 +44,7 @@ void HZZAna::Loop()
     Long64_t nentries = fChain->GetEntries();
     
     // Here you book histograms, etc
-    TH1D* h1_InvMass4l = new TH1D("m4l", "", 60, 50, 200);
+    TH1D* h1_InvMass4l = new TH1D("m4l", "", 400, 0, 400);
     h1_InvMass4l->SetDirectory(m_cOutput);
 
     // 

@@ -67,7 +67,8 @@ class Resources(object):
                           MC("345060", "ggH125_ZZ4lep", "4lep"), 
                           MC("341947", "ZH125_ZZ4lep", "4lep"), 
                           MC("341964", "WH125_ZZ4lep", "4lep"), 
-                          MC("344235", "VBFH125_ZZ4lep", "4lep"),]
+                          MC("344235", "VBFH125_ZZ4lep", "4lep"),
+                          MC("307431", "RS_G_ZZ_llll_c10_m0200", "4lep"),]
         
 
 def download_from_url(url, dest):
