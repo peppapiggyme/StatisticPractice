@@ -19,8 +19,8 @@ namespace SPEx
 {
     /**
      * @brief Calculate chi square value using observed data from histogram
-     * and expected data from function, use root style by default, can switch
-     * to the actual definition.
+     * and expected data from function, use Neyman Chi2 by default, can switch
+     * to Pearson Chi2.
      *
      * definition:
      *
@@ -42,7 +42,7 @@ namespace SPEx
      * update 3: prints how often obs_i = 0
      *
      */
-    double GetChiSquare(TH1* h, TF1* f, bool useRootStyle = true);
+    double GetChiSquare(TH1* h, TF1* f, bool bNeyman = true);
 
     /**
      * @brief Calculate significance given p-value
@@ -62,71 +62,6 @@ namespace SPEx
      *
      */
     double GetPvalue(double z);
-
-
-    /**
-     * @brief The CountingExperiment struct
-     */
-    struct CountingExperiment
-    {
-        double nData = 0.0;
-        double nSig = 0.0;
-        double nBkg = 0.0;
-        double nMu = 0.0;
-
-        CountingExperiment() = default;
-
-        CountingExperiment(double nData, double nSig, double nBkg, double nMu)
-            : nData(nData), nSig(nSig), nBkg(nBkg), nMu(nMu) {}
-
-        /**
-         * @brief LHC-style test statistic for discovery of a positive signal for counting
-         * experiment
-         *
-         * muHat is the maximum likelihood estimator of mu, in this simple case,
-         * it must be (n - bkg) / sig
-         *
-         * for a proper fit, the nData is not a single value but a Poisson distribution maximum at n_obs
-         * then the likelihood fit must be performed on this set of nData.
-         *
-         * @ref https://link.springer.com/article/10.1140/epjc/s10052-011-1554-0
-         *
-         */
-        template<typename T>
-        double q0(T n)
-        {
-            double muHat = ((double)n - nBkg) / nSig;  // maximise L = Pois(mu*s+b | N)
-            if (muHat < 0.0)
-                return 0.;
-            else
-                return -2 * TMath::Log(TMath::Poisson(n, nBkg) / TMath::Poisson(n, nBkg + muHat * nSig));
-        }
-
-        /**
-         * @brief LHC-style test statistic for upper limits
-         *
-         * muHat is the maximum likelihood estimator of mu, in this simple case,
-         * it must be (n - bkg) / sig
-         *
-         * @ref https://link.springer.com/article/10.1140/epjc/s10052-011-1554-0
-         *
-         */
-        template<typename T>
-        double qMu(T n)
-        {
-            double muHat = ((double)n - nBkg) / nSig;
-            if (muHat <= nMu) {
-                if (muHat < 0.0) {
-                    return -2 * TMath::Log(TMath::Poisson(n, nMu*nSig+nBkg) / TMath::Poisson(n, nBkg));
-                } else {
-                    return -2 * TMath::Log(TMath::Poisson(n, nMu*nSig+nBkg) / TMath::Poisson(n, muHat*nSig+nBkg));
-                }
-            } else {
-                return 0.0;
-            }
-        }
-    };
-
 }
 
 #endif // EXUTILS_H

@@ -3,7 +3,7 @@
 
 #include "TMath.h"
 
-double SPEx::GetChiSquare(TH1* h, TF1* f, bool useRootStyle)
+double SPEx::GetChiSquare(TH1* h, TF1* f, bool bNeyman)
 {
     double x2_sum = 0.0;
     int n_zeros = 0;
@@ -14,7 +14,7 @@ double SPEx::GetChiSquare(TH1* h, TF1* f, bool useRootStyle)
         double obs_i = h->GetBinContent(i);
         double exp_i = f->Eval(h->GetXaxis()->GetBinCenter(i));
         if (obs_i > 1e-12)  // is not zero
-            if (useRootStyle)
+            if (bNeyman)
                 x2_i = (obs_i - exp_i) * (obs_i - exp_i) / std::fabs(obs_i);
             else
                 x2_i = (obs_i - exp_i) * (obs_i - exp_i) / std::fabs(exp_i);
