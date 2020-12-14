@@ -81,7 +81,7 @@ void Exercise_2::test() const
     g->SetPointError(2, 0, result_likelihood->Error(0));
 
     g->SetPoint(3, 4, f_result_pearson());
-    g->SetPointError(2, 0, 0);
+    g->SetPointError(3, 0, 0);
 
     g->Draw("A EP");
 

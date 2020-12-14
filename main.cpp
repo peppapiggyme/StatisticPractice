@@ -66,7 +66,7 @@ void PrintInfo()
     { SP::IO::println(" |                                 | "); };
     auto printExercises = []()
     { SP::IO::println("\nChoose from:\n"
-                      " (0) ..Exit the program\n"
+                      " (0) .. Exit\n"
                       " (1) Method of Maximum Likelihood\n"
                       " (2) Method of Least Square\n"
                       " (3) Goodness of fit\n"
@@ -110,6 +110,7 @@ void Test()
     while (cont) {
         try {
             int i = SP::IO::getInteger();
+            if (!i) return;
             if (i >= (int)ExFacts.size() || i < 0)
             {
                 std::cerr << "练习" << i << "不存在， 请重试！\n";
