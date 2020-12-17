@@ -46,6 +46,10 @@ void HZZAna::Loop()
     // Here you book histograms, etc
     TH1D* h1_InvMass4l = new TH1D("m4l", "", 400, 0, 400);
     h1_InvMass4l->SetDirectory(m_cOutput);
+    TH1D* h1_InvMassZ1 = new TH1D("mz1", "", 100, 50, 150);
+    h1_InvMassZ1->SetDirectory(m_cOutput);
+    TH1D* h1_InvMassZ2 = new TH1D("mz2", "", 100, 50, 150);
+    h1_InvMassZ2->SetDirectory(m_cOutput);
 
     // 
     // Loop starts here
@@ -197,6 +201,8 @@ void HZZAna::Loop()
         // Cut 4: Sum of charge = 0 and Reasonable sum of types (Same flavour opposite sign, SFOS)
         APPLY_CUT(sum_charges == 0 && (sum_types == 44 || sum_types == 52 || sum_types == 48));
         
+        unsigned short eComb = 0b000;
+
         // begin case e+e-e+e- or mu+mu-mu+mu-
         if (sum_types == 44 || sum_types == 52)
         {
@@ -207,6 +213,8 @@ void HZZAna::Loop()
                 InvMassZ2_1 = (Lepton_3 + Lepton_4).Mag() / 1000.;
                 delta_Z1_1 =  TMath::Abs(InvMassZ1_1 - 91.18); 
                 delta_Z2_1 =  TMath::Abs(InvMassZ2_1 - 91.18);
+
+                eComb += 0b100;
             }
             if (lep_type->at(goodlep1_index) == lep_type->at(goodlep3_index)  
                 && ((lep_charge->at(goodlep1_index) * lep_charge->at(goodlep3_index)) < 0))
@@ -215,6 +223,8 @@ void HZZAna::Loop()
                 InvMassZ2_2 = (Lepton_2 + Lepton_4).Mag() / 1000.;
                 delta_Z1_2 =  TMath::Abs(InvMassZ1_2 - 91.18); 
                 delta_Z2_2 =  TMath::Abs(InvMassZ2_2 - 91.18);
+
+                eComb += 0b010;
             }
             if (lep_type->at(goodlep1_index) == lep_type->at(goodlep4_index)  
                  && ((lep_charge->at(goodlep1_index) * lep_charge->at(goodlep4_index)) < 0))
@@ -223,17 +233,66 @@ void HZZAna::Loop()
                 InvMassZ2_3 = (Lepton_2 + Lepton_3).Mag() / 1000.;
                 delta_Z1_3 =  TMath::Abs(InvMassZ1_3 - 91.18); 
                 delta_Z2_3 =  TMath::Abs(InvMassZ2_3 - 91.18);
+
+                eComb += 0b001;
             }
             
-            // ??? overwrite ???
-            if(delta_Z1_1 < delta_Z2_1) { InvMassZ1_min = InvMassZ1_1; InvMassZ2_min = InvMassZ2_1; }
-            if(delta_Z2_1 < delta_Z1_1) { InvMassZ1_min = InvMassZ2_1; InvMassZ2_min = InvMassZ1_1; }
+            auto switchMass = [](float& m1, float m2) { float tmp = m2; m2 = m1; m1 = tmp; };
 
-            if(delta_Z1_2 < delta_Z2_2) { InvMassZ1_min = InvMassZ1_2; InvMassZ2_min = InvMassZ2_2; }
-            if(delta_Z2_2 < delta_Z1_2) { InvMassZ1_min = InvMassZ2_2; InvMassZ2_min = InvMassZ1_2; }
+            if(delta_Z2_1 < delta_Z1_1) switchMass(InvMassZ1_1, InvMassZ2_1);
+            if(delta_Z2_2 < delta_Z1_2) switchMass(InvMassZ1_2, InvMassZ2_2);
+            if(delta_Z2_3 < delta_Z1_3) switchMass(InvMassZ1_3, InvMassZ2_3);
 
-            if(delta_Z1_3 < delta_Z2_3) { InvMassZ1_min = InvMassZ1_3; InvMassZ2_min = InvMassZ2_3; }
-            if(delta_Z2_3 < delta_Z1_3) { InvMassZ1_min = InvMassZ2_3; InvMassZ2_min = InvMassZ1_3; }
+            ///////////////////////// MY ll Pairing /////////////////////////
+            /////////////////////////////////////////////////////////////////
+
+            // switch(eComb) {
+
+            // case 3:
+            //     if (delta_Z1_2 < delta_Z1_3) {
+            //         InvMassZ1_min = InvMassZ1_2;
+            //         InvMassZ2_min = InvMassZ2_2;
+            //     } else {
+            //         InvMassZ1_min = InvMassZ1_3;
+            //         InvMassZ2_min = InvMassZ2_3;
+            //     }                    
+            //     break;
+
+            // case 5:
+            //     if (delta_Z1_1 < delta_Z1_3) {
+            //         InvMassZ1_min = InvMassZ1_1;
+            //         InvMassZ2_min = InvMassZ2_1;
+            //     } else {
+            //         InvMassZ1_min = InvMassZ1_3;
+            //         InvMassZ2_min = InvMassZ2_3;
+            //     }                    
+            //     break;
+
+            // case 6:
+            //     if (delta_Z1_1 < delta_Z1_2) {
+            //         InvMassZ1_min = InvMassZ1_1;
+            //         InvMassZ2_min = InvMassZ2_1;
+            //     } else {
+            //         InvMassZ1_min = InvMassZ1_2;
+            //         InvMassZ2_min = InvMassZ2_2;
+            //     }                    
+            //     break;
+
+            // default:
+            //     throw std::runtime_error("bad combination, should not happen!");
+            // }
+
+            ///////////////////////// Open Data Paring /////////////////////////
+            ////////////////////////////////////////////////////////////////////
+
+            // if(delta_Z1_1 < delta_Z2_1) { InvMassZ1_min = InvMassZ1_1; InvMassZ2_min = InvMassZ2_1; }
+            // if(delta_Z2_1 < delta_Z1_1) { InvMassZ1_min = InvMassZ2_1; InvMassZ2_min = InvMassZ1_1; }
+
+            // if(delta_Z1_2 < delta_Z2_2) { InvMassZ1_min = InvMassZ1_2; InvMassZ2_min = InvMassZ2_2; }
+            // if(delta_Z2_2 < delta_Z1_2) { InvMassZ1_min = InvMassZ2_2; InvMassZ2_min = InvMassZ1_2; }
+
+            // if(delta_Z1_3 < delta_Z2_3) { InvMassZ1_min = InvMassZ1_3; InvMassZ2_min = InvMassZ2_3; }
+            // if(delta_Z2_3 < delta_Z1_3) { InvMassZ1_min = InvMassZ2_3; InvMassZ2_min = InvMassZ1_3; }
         }
 
         // case eemm
@@ -290,10 +349,14 @@ void HZZAna::Loop()
         // IO::println("m4l %", FourLepSystem_M);
         // Fill histograms
         h1_InvMass4l->Fill(FourLepSystem_M, weight);
+        h1_InvMassZ1->Fill(InvMassZ1_min, weight);
+        h1_InvMassZ2->Fill(InvMassZ2_min, weight);
     } // end of loop
 
     // Here you save histograms, etc to file
     h1_InvMass4l->Write();
+    h1_InvMassZ1->Write();
+    h1_InvMassZ2->Write();
 
     IO::println("PROCESS [%] DONE!", m_cConfig.process);
 }
